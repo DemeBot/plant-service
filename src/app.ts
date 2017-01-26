@@ -3,6 +3,8 @@ import * as express from 'express';
 import * as logger from 'morgan';
 import * as bodyParser from 'body-parser';
 
+import PlantRouter from './routes/plant.router';
+
 // Creates and configures an ExpressJS web server.
 class App {
 
@@ -37,6 +39,7 @@ class App {
       });
     });
     this.express.use( '/', router );
+    this.express.use( '/api/v1/plants', PlantRouter );
   }
 
 }
