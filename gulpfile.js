@@ -1,9 +1,12 @@
 // Imports
 const gulp = require( 'gulp' );
 const ts = require( 'gulp-typescript' );
+const tslint = require( 'gulp-tslint' );
+
 var exec = require( 'child_process' ).exec;
 var spawn = require( 'child_process' ).spawn,
     node;
+    
 
 // pull in project TypeScript config
 const tsProject = ts.createProject( 'tsconfig.json' );
@@ -18,11 +21,19 @@ gulp.task('server', [ 'transpile', 'apidoc' ], () => {
   });
 })
 
-gulp.task( 'transpile', () => {
+gulp.task( 'tslint', () => {
+    gulp.src( 'src/**/*.ts' )
+    .pipe( tslint( {
+        formatter: "verbose"
+    } ) )
+    .pipe( tslint.report() );
+} );
+
+gulp.task( 'transpile', [ 'tslint' ], () => {
     const tsResults = tsProject.src()
     .pipe( tsProject() );
     return tsResults.js.pipe(gulp.dest('dist'));
-});
+} );
 
 gulp.task( 'apidoc', ( cb ) => {
     exec( 'npm run apidoc' , (err, stdout, stderr) => {
@@ -34,6 +45,6 @@ gulp.task( 'apidoc', ( cb ) => {
 
 gulp.task( 'watch', [ 'server' ], () => {
     gulp.watch('src/**/*.ts', [ 'server' ]);
-});
+} );
 
-gulp.task( 'default', [ 'watch' ]);
+gulp.task( 'default', [ 'watch' ] );

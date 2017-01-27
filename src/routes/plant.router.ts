@@ -1,8 +1,8 @@
-import { Router, Request, Response, NextFunction } from 'express';
+import { Router, Request, Response, NextFunction } from "express";
 
-import  * as NeDB from 'nedb';
+import  * as NeDB from "nedb";
 
-var DB:NeDB = new NeDB({ filename: 'plants.db', autoload: true });
+let DB: NeDB = new NeDB( { filename: "plants.db", autoload: true } );
 
 export class PlantRouter {
     router: Router;
@@ -27,7 +27,7 @@ export class PlantRouter {
      */
     public getAll( req: Request, res: Response, next: NextFunction ) {
 
-        var all = DB.find( {  }, ( err, docs ) => {
+        let all = DB.find( {  }, ( err, docs ) => {
             res.send(
                 {
                     plants : docs
@@ -48,7 +48,7 @@ export class PlantRouter {
 
         let query = req.params.name;
         let plant = DB.findOne( { name: query }, ( err, doc ) => {
-            res.send( { 
+            res.send( {
                 plant: doc
              } );
         } );
@@ -60,8 +60,8 @@ export class PlantRouter {
      */
     init() {
 
-        this.router.get( '/', this.getAll );
-        this.router.get( '/:name', this.getOne );
+        this.router.get( "/", this.getAll );
+        this.router.get( "/:name", this.getOne );
 
     }
 }

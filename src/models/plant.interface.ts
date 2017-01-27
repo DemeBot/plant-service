@@ -23,5 +23,5 @@ interface Plant {
 
     // Maxiumum diameter in mm the plant is expected to grow.
     avgMaxDiameter: number;
-    
+
 }
