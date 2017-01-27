@@ -49,5 +49,10 @@ jspm_packages
 # dotenv environment variables file
 .env
 
-# dist folder
+# Build folder
 dist
+
+# Documentation folder
+doc
+
+.vscode

@@ -5,6 +5,8 @@ import * as bodyParser from 'body-parser';
 
 import PlantRouter from './routes/plant.router';
 
+var version = 1;
+
 // Creates and configures an ExpressJS web server.
 class App {
 
@@ -23,23 +25,17 @@ class App {
     this.express.use( logger( 'dev' ) );
     this.express.use( bodyParser.json() );
     this.express.use( bodyParser.urlencoded( { extended: false } ) );
+    this.express.use( ( req, res, next ) => {
+      res.header( "Access-Control-Allow-Origin", "*" );
+      res.header( "Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept" );
+      next();
+    } );
   }
 
   // Configure API endpoints.
   private routes(): void {
-    /* This is just to get up and running, and to make sure what we've got is
-     * working so far. This function will change when we start to add more
-     * API endpoints */
-    let router = express.Router();
-    // placeholder route handler
-    router.get('/', (req, res, next) => {
-      res.json({
-        name: 'plant service',
-        version: 1
-      });
-    });
-    this.express.use( '/', router );
-    this.express.use( '/api/v1/plants', PlantRouter );
+    this.express.use( '/doc/v' + version, express.static( __dirname + '/apidoc' ) );
+    this.express.use( '/api/v' + version +'/plants', PlantRouter );
   }
 
 }

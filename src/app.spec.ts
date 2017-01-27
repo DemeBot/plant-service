@@ -8,6 +8,7 @@ import app from './app';
 chai.use( chaiHttp );
 const expect = chai.expect;
 
+/*
 describe ('baseRoute', () => {
 
     it('should be json', () => {
@@ -25,3 +26,4 @@ describe ('baseRoute', () => {
             } );
         } );
 });
+*/

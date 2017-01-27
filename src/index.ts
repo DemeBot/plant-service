@@ -9,9 +9,8 @@ const port = normalizePort( process.env.PORT || 3000 );
 app.set( 'port', port );
 
 const server = http.createServer( app );
-server.listen( port );
+server.listen( port, onListening );
 server.on( 'error', onError );
-server.on( 'listening', onListening );
 
 function normalizePort( val: number|string ): number|string|boolean {
     let port: number = ( typeof val === 'string' ) ? parseInt( val, 10) : val;

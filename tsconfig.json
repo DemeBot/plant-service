@@ -2,12 +2,17 @@
     "compilerOptions": {
         "target": "es6",
         "module": "commonjs",
-        "outDir": "dist"
+        "experimentalDecorators": true,
+        "sourceMap": true,
+        "outDir": "dist",
+        "sourceRoot": "src"
     },
     "include": [
         "src/**/*.ts"
     ],
     "exclude": [
-        "node_modules"
+        "node_modules",
+        "src/**/*.spec.ts",
+        "dist"
     ]
 }
