@@ -5,8 +5,6 @@ import * as bodyParser from "body-parser";
 
 import PlantRouter from "./routes/plant.router";
 
-let version = 0;
-
 // Creates and configures an ExpressJS web server.
 class App {
 
@@ -34,8 +32,8 @@ class App {
 
   // Configure API endpoints.
   private routes(): void {
-    this.express.use( "/doc/v" + version, express.static( __dirname + "/apidoc" ) );
-    this.express.use( "/api/v" + version + "/plants", PlantRouter );
+    this.express.use( "/doc/v1", express.static( __dirname + "/apidoc" ) );
+    this.express.use( "/api/v1/plants", PlantRouter );
   }
 
 }

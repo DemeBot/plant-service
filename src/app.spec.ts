@@ -7,23 +7,3 @@ import app from "./app";
 
 chai.use( chaiHttp );
 const expect = chai.expect;
-
-/*
-describe ("baseRoute", () => {
-
-    it("should be json", () => {
-        return chai.request( app ).get( "/" )
-        .then( res => {
-            expect( res.type ).to.eql( "application/json" );
-        } );
-    } );
-
-    it( "should have the correct version and name", () => {
-            return chai.request( app ).get( "/" )
-            .then( res => {
-                expect( res.body.version ).to.eql(1);
-                expect( res.body.name ).to.eql("plant service");
-            } );
-        } );
-});
-*/

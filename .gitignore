@@ -55,4 +55,8 @@ dist
 # Documentation folder
 doc
 
+# ignore vscode config
 .vscode
+
+# ingore data folder
+data
