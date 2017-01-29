@@ -40,7 +40,7 @@ gulp.task( 'tslint', () => {
 } );
 
 // ts transpile task
-gulp.task( 'transpile', [ 'tslint' ], () => {
+gulp.task( 'transpile', () => {
 
     const tsResults = tsProject.src()
     .pipe( tsProject() );
@@ -74,4 +74,4 @@ gulp.task( 'watch', [ 'server' ], () => {
     gulp.watch('src/**/*.ts', [ 'server' ]);
 } );
 
-gulp.task( 'default', [ 'test', 'server' ] );
+gulp.task( 'default', [ 'tslint', 'test', 'server' ] );

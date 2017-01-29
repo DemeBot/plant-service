@@ -3,56 +3,138 @@ import * as chai from "chai";
 import * as sinon from "sinon";
 import * as httpMocks from "node-mocks-http";
 
-import chaiHttp = require( "chai-http" );
+import { Observable } from "rxjs/Observable";
 
 const expect = chai.expect;
 
-import PlantService from "./plant.service";
+import { PlantService } from "./plant.service";
+import { PlantController } from "./../controllers/plant.controller";
 
-describe ( 'Plant Service', () => {
+const mockData = [
+    { "name": "lettuce", "plantingDepth": 25, "daysToGerminate": 2, "avgMaxHeight": 300, "avgMaxDiameter": 300, "_id": "FkJhaxNHNSGq5XEe"},
+    { "name": "chives", "plantingDepth": 10, "daysToGerminate": 21, "avgMaxHeight": 450, "avgMaxDiameter": 150, "_id": "KDoR2olxPFsmsrPA"},
+    { "name": "sage", "plantingDepth": 5, "daysToGerminate": 20, "avgMaxHeight": 750, "avgMaxDiameter": 600, "_id": "SGFjq2hYopkV6v3k"},
+    { "name": "dill", "plantingDepth": 10, "daysToGerminate": 10, "avgMaxHeight": 1200, "avgMaxDiameter": 750, "_id": "fODAKp2jOOx8Obtl"},
+    { "name": "parsley", "plantingDepth": 5, "daysToGerminate": 25, "avgMaxHeight": 750, "avgMaxDiameter": 750, "_id": "p2WfPSLkFoRlphFX"},
+];
 
-    describe ( 'getAll', () => {
+describe ( "Plant Service", () => {
 
-        var getAllFunc;
+    let plantService: PlantService;
+    let plantController: any;
 
-        beforeEach( () => {
-            getAllFunc = PlantService.getAll; 
-        } );
-    
-        it( 'should be a function?', () => {
-            expect( getAllFunc ).to.be.a("function");
-        } );
-
-        it( 'should accept three arguments', () => {
-            expect( getAllFunc.length ).to.equal(3);
-        } );
-
-        it( 'should call through', () => {
-            var request = httpMocks.createRequest( {
-                method: 'GET',
-                url: '/',
-                params: {}
-            } );
-        } );
-    
+    before( () => {
+        plantController = new PlantController();
+        plantService = new PlantService( plantController );
     } );
 
-    describe ( 'getOne', () => {
+    describe ( "getAll()", () => {
 
-        var getOneFunc;
+        let callResult;
+        let request, response, next;
+
+        before( () => {
+            let observer = Observable.create( observer => {
+                observer.next( mockData );
+                observer.complete();
+            } );
+
+            sinon.stub( plantController, "getAll", () => { return observer; } );
+        } );
+
+        after( () => {
+            plantController.getAll.restore();
+        } );
 
         beforeEach( () => {
-            getOneFunc = PlantService.getOne; 
-        } );
-    
-        it( 'should be a function?', () => {
-            expect( getOneFunc ).to.be.a("function");
+
+            request = httpMocks.createRequest( {
+                method: "GET",
+                url: "/",
+                params: {}
+            } );
+
+            response = {
+                send: ( input ) => {
+                    callResult = input;
+                }
+            };
+
+            next = () => {};
+
         } );
 
-        it( 'should accept three arguments', () => {
-            expect( getOneFunc.length ).to.equal(3);
-        } )
-    
+        it( "should return an object", () => {
+            plantService.getAll( request, response, next );
+            expect( callResult ).to.be.an( "object" );
+        } );
+
+        it( "should have plants property", () => {
+            plantService.getAll( request, response, next );
+            expect( callResult ).to.haveOwnProperty( "plants" );
+        } );
+
+        it( "should get back mock data in plants property", () => {
+            plantService.getAll( request, response, next );
+            expect( callResult.plants.length ).to.equal( mockData.length );
+            expect( callResult.plants ).to.equal( mockData );
+        } );
+
+    } );
+
+    describe ( "getOne()", () => {
+
+        let callResult;
+        let request, response, next;
+
+        before( () => {
+            let observer = Observable.create( observer => {
+                observer.next( mockData[0] );
+                observer.complete();
+            } );
+
+            sinon.stub( plantController, "getOne", () => { return observer; } );
+        } );
+
+        after( () => {
+            plantController.getOne.restore();
+        } );
+
+        beforeEach( () => {
+
+            request = httpMocks.createRequest( {
+                method: "GET",
+                url: "/",
+                params: {}
+            } );
+
+            response = {
+                send: ( input ) => {
+                    callResult = input;
+                }
+            };
+
+            next = () => {};
+
+        } );
+
+        it( "should return an object", () => {
+            plantService.getOne( request, response, next );
+            expect( callResult ).to.be.an( "object" );
+        } );
+
+        it( "should have name property", () => {
+            plantService.getOne( request, response, next );
+            expect( callResult ).to.haveOwnProperty( "name" );
+            expect( callResult.name ).to.equal( "lettuce" );
+        } );
+
+        it( "should get back mock data", () => {
+            plantService.getOne( request, response, next );
+            expect( Object.keys( callResult ).length ).to.equal( Object.keys( mockData[0] ).length );
+            expect( callResult ).to.equal( mockData[0] );
+        } );
+
     } );
 
 } );

@@ -7,16 +7,15 @@ import PlantInterface from "./../data/models/plant.interface";
 
 export class PlantController {
 
-    DB: NeDB;
+    private DB: NeDB;
 
-    constructor() {
-
-        this.DB = new NeDB( { filename: __dirname + "/../data/plant.db", autoload: true } );
-        
+    constructor( newDB?: NeDB ) {
+        if ( newDB ) this.DB = newDB;
+        else this.DB = new NeDB( { filename: __dirname + "/../data/plant.db", autoload: true } );
     }
 
     // Call NeDB plant database for all plants
-    getAll(): Observable< PlantInterface[] > {
+    public getAll = () => {
         return Observable.create( observer => {
             this.DB.find( {  }, ( err: Error, docs: PlantInterface[] ) => {
                 if ( err ) observer.error( err );
@@ -25,10 +24,10 @@ export class PlantController {
                 observer.complete();
             } );
         } );
-    };
+    }
 
-    // Find plants matching requested name 
-    getOne( name: string ): Observable< PlantInterface > {
+    // Find plants matching requested name
+    public getOne = ( name: string ) => {
         return Observable.create( observer => {
             this.DB.find( { name: name }, ( err: Error, docs: PlantInterface[] ) => {
                 if ( err ) observer.error( err );
@@ -39,9 +38,7 @@ export class PlantController {
                 observer.complete();
             } );
         } );
-    };
+    }
 }
 
-const plantController = new PlantController();
-
-export default plantController;
+export default PlantController;

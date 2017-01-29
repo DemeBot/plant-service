@@ -5,14 +5,22 @@ import PlantService from "./../services/plant.service";
 export class PlantRouter {
 
     router: Router;
+    private plantService: PlantService;
 
     /**
      * Initialize the router
      */
-    constructor() {
+    constructor( injPlantService?: PlantService ) {
+
+        if ( injPlantService ) this.plantService = injPlantService;
+        else this.plantService = new PlantService();
 
         this.router = Router();
-        
+        this.init();
+
+    }
+
+    init() {
         /**
          * @api {get} /api/v1/plants Get all plants
          * @apiName root
@@ -20,7 +28,7 @@ export class PlantRouter {
          *
          * @apiSuccess {Plant[]} plants An array of plants.
          */
-        this.router.get( "/", PlantService.getAll );
+        this.router.get( "/", this.plantService.getAll );
 
         /**
          * @api {get} /api/v1/plants/:name Get one plant by name
@@ -30,8 +38,7 @@ export class PlantRouter {
          * @apiSampleRequest /api/v1/plants/lettuce
          * @apiSuccess {Plant} plant A plant.
          */
-        this.router.get( "/:name", PlantService.getOne );
-
+        this.router.get( "/:name", this.plantService.getOne );
     }
 }
 
