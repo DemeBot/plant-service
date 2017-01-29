@@ -58,5 +58,5 @@ doc
 # ignore vscode config
 .vscode
 
-# ingore data folder
-data
+# ingore databases in data folder
+*.db
