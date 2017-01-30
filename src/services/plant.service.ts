@@ -9,9 +9,8 @@ export class PlantService {
 
     private plantController: PlantController;
 
-    constructor( injPlantController?: PlantController ) {
-        if ( injPlantController ) this.plantController = injPlantController;
-        else this.plantController = new PlantController();
+    constructor( plantController?: PlantController ) {
+        this.plantController = ( typeof plantController !== 'undefined' ) ? plantController : new PlantController();
     }
 
     public getAll = ( req: Request, res: Response, next: NextFunction ) => {

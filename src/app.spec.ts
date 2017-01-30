@@ -3,16 +3,54 @@ import * as chai from "chai";
 
 import chaiHttp = require( "chai-http" );
 
-import app from "./../src/app";
+import App from "./../src/app";
+
+import PlantService from "./services/plant.service"
+import PlantRouter from "./routes/plant.router"
+import PlantController from "./controllers/plant.controller"
+
+import * as NeDB from "NeDB";
 
 chai.use( chaiHttp );
 const expect = chai.expect;
 
-/*
+const mockData = [
+    { "name": "lettuce", "plantingDepth": 25, "daysToGerminate": 2, "avgMaxHeight": 300, "avgMaxDiameter": 300, "_id": "FkJhaxNHNSGq5XEe"},
+    { "name": "chives", "plantingDepth": 10, "daysToGerminate": 21, "avgMaxHeight": 450, "avgMaxDiameter": 150, "_id": "KDoR2olxPFsmsrPA"},
+    { "name": "sage", "plantingDepth": 5, "daysToGerminate": 20, "avgMaxHeight": 750, "avgMaxDiameter": 600, "_id": "SGFjq2hYopkV6v3k"},
+    { "name": "dill", "plantingDepth": 10, "daysToGerminate": 10, "avgMaxHeight": 1200, "avgMaxDiameter": 750, "_id": "fODAKp2jOOx8Obtl"},
+    { "name": "parsley", "plantingDepth": 5, "daysToGerminate": 25, "avgMaxHeight": 750, "avgMaxDiameter": 750, "_id": "p2WfPSLkFoRlphFX"},
+];
+
+
+let plantController;
+let plantService;
+let plantRouter;
+
+let app;
+
 describe ( "GET api/v1/plants", () => {
 
-    before( () => {
-        return chai.request( app ).get( "/api/v1/plants" );
+    let db;
+
+    before( ( done ) => {
+
+        db = new NeDB( { autoload: true } );
+
+        mockData.forEach( ( doc ) => {
+            db.insert( doc, ( err, newDoc ) => {
+                if ( err ) throw err;
+            } );
+        } );
+
+        plantController = new PlantController( db );
+        plantService = new PlantService( plantController );
+        plantRouter = new PlantRouter( plantService );
+
+        app = new App(plantRouter).express;
+
+        done();
+
     } );
 
     it( "responds with JSON array", () => {
@@ -43,7 +81,30 @@ describe ( "GET api/v1/plants", () => {
 
 } );
 
+
 describe ( "GET /api/v1/plants/:name", () => {
+
+    let db;
+
+    before( ( done ) => {
+
+        db = new NeDB( { autoload: true } );
+
+        mockData.forEach( ( doc ) => {
+            db.insert( doc, ( err, newDoc ) => {
+                if ( err ) throw err;
+            } );
+        } );
+
+        plantController = new PlantController( db );
+        plantService = new PlantService( plantController );
+        plantRouter = new PlantRouter( plantService );
+
+        app = new App(plantRouter).express;
+
+        done();
+
+    } );
 
     it( "responds with a single JSON object", () => {
         return chai.request( app ).get( "/api/v1/plants/lettuce" )
@@ -62,4 +123,3 @@ describe ( "GET /api/v1/plants/:name", () => {
     } );
 
 } );
-*/

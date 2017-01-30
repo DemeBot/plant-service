@@ -10,10 +10,9 @@ export class PlantRouter {
     /**
      * Initialize the router
      */
-    constructor( injPlantService?: PlantService ) {
+    constructor( plantService?: PlantService ) {
 
-        if ( injPlantService ) this.plantService = injPlantService;
-        else this.plantService = new PlantService();
+        this.plantService = typeof plantService !== 'undefined' ? plantService : new PlantService();
 
         this.router = Router();
         this.init();
@@ -43,6 +42,5 @@ export class PlantRouter {
 }
 
 // Create router and export its Express.Router
-const plantRoutes = new PlantRouter();
 
-export default plantRoutes.router;
+export default PlantRouter;
