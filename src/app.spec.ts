@@ -8,6 +8,7 @@ import app from "./../src/app";
 chai.use( chaiHttp );
 const expect = chai.expect;
 
+/*
 describe ( "GET api/v1/plants", () => {
 
     before( () => {
@@ -61,3 +62,4 @@ describe ( "GET /api/v1/plants/:name", () => {
     } );
 
 } );
+*/

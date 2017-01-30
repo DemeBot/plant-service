@@ -17,13 +17,13 @@ const mockData = [
     { "name": "parsley", "plantingDepth": 5, "daysToGerminate": 25, "avgMaxHeight": 750, "avgMaxDiameter": 750, "_id": "p2WfPSLkFoRlphFX"},
 ];
 
-describe ( 'Plant Controller', () => {
+describe ( "Plant Controller", () => {
 
     let db: any;
     let plantController: PlantController;
 
 
-    describe ( 'getAll()', () => {
+    describe ( "getAll()", () => {
 
         before( ( done ) => {
 
@@ -41,36 +41,36 @@ describe ( 'Plant Controller', () => {
 
         } );
 
-        it( 'should return an array', ( done ) => {
+        it( "should return an array", ( done ) => {
             let retObs = plantController.getAll();
-            
+
             retObs.subscribe( ( docs ) => {
                 expect( docs ).to.be.an("array");
                 done();
             } );
         } );
 
-        it( 'should return the mock data', ( done ) => {
+        it( "should return the mock data", ( done ) => {
             let retObs = plantController.getAll();
-            
+
             retObs.subscribe( ( docs ) => {
                 expect( docs ).to.deep.equal( mockData );
                 done();
             } );
         } );
 
-        it( 'should return the correct number of objects', ( done ) => {
+        it( "should return the correct number of objects", ( done ) => {
             let retObs = plantController.getAll();
-            
+
             retObs.subscribe( ( docs ) => {
                 expect( docs.length ).to.equal(mockData.length);
                 done();
             } );
         } );
-    
+
     } );
 
-    describe ( 'getOne()', () => {
+    describe ( "getOne()", () => {
 
         before( (done) => {
 
@@ -86,33 +86,33 @@ describe ( 'Plant Controller', () => {
 
         } );
 
-        it( 'should return an object', ( done ) => {
+        it( "should return an object", ( done ) => {
             let retObs = plantController.getOne( "lettuce" );
-            
+
             retObs.subscribe( ( docs ) => {
                 expect( docs ).to.be.an( "object" );
                 done();
             } );
         } );
 
-        it( 'should return the mock data', ( done ) => {
+        it( "should return the mock data", ( done ) => {
             let retObs = plantController.getOne( "lettuce" );
-            
+
             retObs.subscribe( ( docs ) => {
                 expect( docs ).to.deep.equal(mockData[0]);
                 done();
             } );
         } );
 
-        it( 'should return the correct number of properties', ( done ) => {
+        it( "should return the correct number of properties", ( done ) => {
             let retObs = plantController.getOne( "lettuce" );
-            
+
             retObs.subscribe( ( docs ) => {
                 expect( Object.keys( docs ).length ).to.equal( Object.keys( mockData[0] ).length );
                 done();
             } );
         } );
-    
+
     } );
 
 } );
