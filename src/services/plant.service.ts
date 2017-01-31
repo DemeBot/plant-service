@@ -10,7 +10,7 @@ export class PlantService {
     private plantController: PlantController;
 
     constructor( plantController?: PlantController ) {
-        this.plantController = ( typeof plantController !== 'undefined' ) ? plantController : new PlantController();
+        this.plantController = ( typeof plantController !== "undefined" ) ? plantController : new PlantController();
     }
 
     public getAll = ( req: Request, res: Response, next: NextFunction ) => {

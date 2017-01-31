@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "gulp",
-    "test": "mocha --reporter mocha-jenkins-reporter --compilers ts:ts-node/register src/**/*.spec.ts",
+    "test": "gulp tslint && mocha --reporter spec --compilers ts:ts-node/register src/**/*.spec.ts",
     "apidoc": "apidoc -i src/ -o dist/apidoc/"
   },
   "apidoc": {

@@ -10,7 +10,7 @@ export class PlantController {
     private DB: NeDB;
 
     constructor( DB?: NeDB ) {
-        this.DB = ( typeof DB !== 'undefined' ) ? DB : new NeDB( { filename: __dirname + "/../data/plant.db", autoload: true } );
+        this.DB = ( typeof DB !== "undefined" ) ? DB : new NeDB( { filename: __dirname + "/../data/plant.db", autoload: true } );
     }
 
     // Call NeDB plant database for all plants

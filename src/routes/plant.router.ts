@@ -12,7 +12,7 @@ export class PlantRouter {
      */
     constructor( plantService?: PlantService ) {
 
-        this.plantService = typeof plantService !== 'undefined' ? plantService : new PlantService();
+        this.plantService = typeof plantService !== "undefined" ? plantService : new PlantService();
 
         this.router = Router();
         this.init();

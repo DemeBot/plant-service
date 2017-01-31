@@ -15,7 +15,7 @@ class App {
   // Run configuration methods on the Express instance.
   constructor( plantRouter?: PlantRouter ) {
     this.express = express();
-    this.plantRouter = ( typeof plantRouter !== 'undefined' ) ? plantRouter : new PlantRouter();
+    this.plantRouter = ( typeof plantRouter !== "undefined" ) ? plantRouter : new PlantRouter();
     this.middleware();
     this.routes();
   }
