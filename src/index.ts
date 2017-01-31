@@ -6,9 +6,10 @@ import app from "./app";
 debug( "ts-express:server" );
 
 const port = normalizePort( process.env.PORT || 3000 );
-app.set( "port", port );
+let appExpress = new app().express;
+appExpress.set( "port", port );
 
-const server = http.createServer( app );
+const server = http.createServer( appExpress );
 server.listen( port, onListening );
 server.on( "error", onError );
 
