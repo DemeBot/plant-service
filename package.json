@@ -6,7 +6,8 @@
   "scripts": {
     "start": "gulp",
     "test": "gulp tslint && mocha --reporter spec --compilers ts:ts-node/register src/**/*.spec.ts",
-    "apidoc": "apidoc -i src/ -o dist/apidoc/"
+    "apidoc": "apidoc -i src/ -o dist/apidoc/",
+    "build": "gulp build"
   },
   "apidoc": {
     "sampleUrl": "http://localhost:3000"

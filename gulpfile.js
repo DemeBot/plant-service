@@ -70,6 +70,8 @@ gulp.task( 'apidoc', ( cb ) => {
 
 } );
 
+gulp.task( 'build', [ 'apidoc', 'transpile' ] );
+
 gulp.task( 'watch', [ 'server' ], () => {
     gulp.watch('src/**/*.ts', [ 'server' ]);
 } );
