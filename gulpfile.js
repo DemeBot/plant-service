@@ -55,6 +55,11 @@ gulp.task( 'test', () => {
         reporter: 'mocha-jenkins-reporter',
         compilers: {
             ts:ts-node
+        },
+        "reporterOptions": {
+            "junit_report_name": "Tests",
+            "junit_report_path": "report.xml",
+            "junit_report_stack": 1
         }
      } ) );
 
