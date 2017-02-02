@@ -7,41 +7,63 @@ import PlantInterface from "./../data/models/plant.interface";
 
 export class PlantController {
 
-    DB: NeDB;
+    private DB: NeDB;
 
-    constructor() {
-
-        this.DB = new NeDB( { filename: __dirname + "/../data/plant.db", autoload: true } );
-        
+    constructor( DB?: NeDB ) {
+        // instantiate DB by first checking for injected DB and creating one if one wasn't injected
+        this.DB = ( typeof DB !== "undefined" ) ? DB : new NeDB( { filename: __dirname + "/../data/plant.db", autoload: true } );
     }
 
     // Call NeDB plant database for all plants
-    getAll(): Observable< PlantInterface[] > {
+    public getAll = () => {
+        // return observable so that a caller can subscribe to it and wait for a response
         return Observable.create( observer => {
-            this.DB.find( {  }, ( err: Error, docs: PlantInterface[] ) => {
+            // get all results from DB by searching for any match
+            this.DB.find( {}, ( err: Error, docs: PlantInterface[] ) => {
+                // if an error is found, pass the error to the subscriber
                 if ( err ) observer.error( err );
-                debug( "controller getAll: " + JSON.stringify( docs ) );
-                observer.next( docs as PlantInterface[] );
-                observer.complete();
-            } );
-        } );
-    };
+                // otherwise pass any results found to the subscriber
+                else {
+                    // log to debug
+                    debug( "controller getAll: " + JSON.stringify( docs ) );
 
-    // Find plants matching requested name 
-    getOne( name: string ): Observable< PlantInterface > {
-        return Observable.create( observer => {
-            this.DB.find( { name: name }, ( err: Error, docs: PlantInterface[] ) => {
-                if ( err ) observer.error( err );
-                docs.forEach( ( doc ) => {
-                    debug( "controller getAll: " + JSON.stringify( doc ) );
-                    observer.next( doc as PlantInterface );
-                } );
+                    // notify subscribers of a response
+                    observer.next( docs as PlantInterface[] );
+                }
+
+                // close observable
                 observer.complete();
             } );
         } );
-    };
+    }
+
+    // Find plants matching requested name
+    public getOne = ( name: string ) => {
+        // return observable so that a caller can subscribe to it and wait for a response
+        return Observable.create( observer => {
+            // get results which match desire name from DB by searching for a match
+            this.DB.find( { name: name }, ( err: Error, docs: PlantInterface[] ) => {
+                // if an error is found, pass the error to the subscriber
+                if ( err ) {
+                    debug( err );
+                    observer.error( err );
+                }
+                else if ( docs.length === 0 ) {
+                    debug("NO DOCS FOUND");
+                }
+                // otherwise pass any results found to the subscriber
+                else {
+                    docs.forEach( ( doc ) => {
+                        debug( "controller getAll: " + JSON.stringify( doc ) );
+                        observer.next( doc as PlantInterface );
+                    } );
+                }
+
+                // close observable
+                observer.complete();
+            } );
+        } );
+    }
 }
 
-const plantController = new PlantController();
-
-export default plantController;
+export default PlantController;

@@ -60,3 +60,6 @@ doc
 
 # ingore databases in data folder
 *.db
+
+# ignore reporter test Output
+*report.xml

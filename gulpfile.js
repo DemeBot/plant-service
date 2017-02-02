@@ -14,23 +14,28 @@ var spawn = require( 'child_process' ).spawn,
 // pull in project TypeScript config
 const tsProject = gulpTS.createProject( 'tsconfig.json' );
 
+// launch server, killing old instances if any are running
 gulp.task( 'server', [ 'transpile', 'apidoc' ], () => {
 
-  if ( node ) node.kill()
+    // kill any nunning instances
+    if ( node ) node.kill()
 
-  node = spawn( 'node', [ 'dist/index.js' ], { stdio: 'inherit' } );
+    // spawn a new process
+    node = spawn( 'node', [ 'dist/server.js' ], { stdio: 'inherit' } );
 
-  node.on( 'close', function ( code ) {
-    if ( code === 8 ) {
-      gulp.log('Error detected, waiting for changes...');
-    }
-  } );
+    // watch for any problems
+    node.on( 'close', function ( code ) {
+        if ( code === 8 ) {
+        gulp.log('Error detected, waiting for changes...');
+        }
+    } );
 
 } );
 
 // linting task
 gulp.task( 'tslint', () => {
 
+    // get source
     gulp.src( 'src/**/*.ts' )
     .pipe( tslint( {
         formatter: "verbose"
@@ -40,21 +45,28 @@ gulp.task( 'tslint', () => {
 } );
 
 // ts transpile task
-gulp.task( 'transpile', [ 'tslint' ], () => {
+gulp.task( 'transpile', () => {
 
+    // load source from ts configs
     const tsResults = tsProject.src()
     .pipe( tsProject() );
 
+    // hand back js destination files
     return tsResults.js.pipe( gulp.dest( 'dist' ) );
 } );
 
+// run tests using mocha 
 gulp.task( 'test', () => {
 
     return gulp.src( 'src/**/*.spec.ts', { read: false } )
     .pipe( mocha( {
-        reporter: 'mocha-jenkins-reporter',
         compilers: {
             ts:ts-node
+        },
+        "reporterOptions": {
+            "junit_report_name": "Tests",
+            "junit_report_path": "report.xml",
+            "junit_report_stack": 1
         }
      } ) );
 
@@ -70,8 +82,10 @@ gulp.task( 'apidoc', ( cb ) => {
 
 } );
 
+gulp.task( 'build', [ 'apidoc', 'transpile' ] );
+
 gulp.task( 'watch', [ 'server' ], () => {
     gulp.watch('src/**/*.ts', [ 'server' ]);
 } );
 
-gulp.task( 'default', [ 'test', 'server' ] );
+gulp.task( 'default', [ 'tslint', 'test', 'server' ] );
