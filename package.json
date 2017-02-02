@@ -9,12 +9,17 @@
     "test-jenkins": "JUNIT_REPORT_PATH=report.xml mocha --colors --reporter mocha-jenkins-reporter --compilers ts:ts-node/register src/**/*.spec.ts",
     "apidoc": "apidoc -i src/ -o dist/apidoc/",
     "build": "gulp build",
-    "tslint": "gulp tslint"
+    "tslint": "gulp tslint",
+    "watch": "gulp watch"
+  },
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "http://git.ungear.us/DemeBot/plant-service.git"
   },
   "apidoc": {
     "sampleUrl": "http://localhost:3000"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {

@@ -77,7 +77,7 @@ describe ( "Plant Service", () => {
         it( "should get back mock data in plants property", () => {
             plantService.getAll( request, response, next );
             expect( callResult.plants.length ).to.equal( mockData.length );
-            expect( callResult.plants ).to.equal( mockData );
+            expect( callResult.plants ).to.deep.equal( mockData );
         } );
 
     } );
