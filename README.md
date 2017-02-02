@@ -1,3 +1,4 @@
+# DemeBot Plant Service
 ## Synopsis
 
 Service which saves and stores data about plants.
