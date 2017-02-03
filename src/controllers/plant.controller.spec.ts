@@ -16,6 +16,7 @@ const mockData = [
     { "name": "dill", "plantingDepth": 10, "daysToGerminate": 10, "avgMaxHeight": 1200, "avgMaxDiameter": 750, "_id": "fODAKp2jOOx8Obtl"},
     { "name": "parsley", "plantingDepth": 5, "daysToGerminate": 25, "avgMaxHeight": 750, "avgMaxDiameter": 750, "_id": "p2WfPSLkFoRlphFX"},
 ];
+
 const newData =  { "name": "tomatoes", "plantingDepth": 50, "daysToGerminate": 10, "avgMaxHeight": 1524, "avgMaxDiameter": 600};
 
 describe ( "Plant Controller", () => {

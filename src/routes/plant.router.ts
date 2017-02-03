@@ -38,6 +38,22 @@ export class PlantRouter {
          * @apiSuccess {Plant} plant A plant.
          */
         this.router.get( "/:name", this.plantService.getOne );
+        /**
+         * @api {put} /api/v1/plants Add a new plant
+         * @apiName Add a new plant
+         * @apiGroup Plant
+         *
+         * @apiParam (Plant) {string} name Name of the plant
+         * @apiParam (Plant) {number} plantingDepth Depth to plant the seed
+         * @apiParam (Plant) {number} daysToGerminate Number of days for the seed to germinate
+         * @apiParam (Plant) {number} avgMaxHeight Average max height of the plant
+         * @apiParam (Plant) {number} avgMaxDiameter Average max diameter of the plant
+         * @apiParam (Plant) {number} [maxPlantingDepth] Max depth to plant the seed
+         * @apiParam (Plant) {number} [minPlantingDepth] Min depth to plant the seed
+         * @apiSampleRequest /api/v1/plants
+         * @apiSuccess {Plant} plant The plant that you added.
+         */
+        this.router.put( "/", this.plantService.putOne );
     }
 }
 

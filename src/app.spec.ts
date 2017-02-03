@@ -9,7 +9,7 @@ import PlantService from "./services/plant.service";
 import PlantRouter from "./routes/plant.router";
 import PlantController from "./controllers/plant.controller";
 
-import * as NeDB from "NeDB";
+import * as NeDB from "nedb";
 
 chai.use( chaiHttp );
 const expect = chai.expect;
@@ -22,6 +22,7 @@ const mockData = [
     { "name": "parsley", "plantingDepth": 5, "daysToGerminate": 25, "avgMaxHeight": 750, "avgMaxDiameter": 750, "_id": "p2WfPSLkFoRlphFX"},
 ];
 
+const newData =  { "name": "tomatoes", "plantingDepth": 50, "daysToGerminate": 10, "avgMaxHeight": 1524, "avgMaxDiameter": 600, "_id": "fV12zl1M5j27gIY8"};
 
 let plantController;
 let plantService;
@@ -100,6 +101,33 @@ describe ( "Application Integration Test:", () => {
             return chai.request( app ).get( "/api/v1/plants/lettuce" )
             .then( res => {
                 expect( res.body.name ).to.equal( "lettuce" );
+            } );
+        } );
+
+    } );
+
+    describe ( "PUT /api/v1/plants", () => {
+        let requestBody;
+        beforeEach( () => {
+            requestBody = JSON.parse(JSON.stringify(newData));
+            delete requestBody["_id"];
+        } );
+
+        it( "responds with a single JSON object", () => {
+            return chai.request( app ).put( "/api/v1/plants" )
+            .send(requestBody)
+            .then( res => {
+                expect( res.status ).to.equal( 200 );
+                expect( res ).to.be.json;
+                expect( res.body ).to.be.an("object");
+            } );
+        } );
+
+        it( "responds with a single JSON object", () => {
+            return chai.request( app ).put( "/api/v1/plants" )
+            .send(requestBody)
+            .then( res => {
+                expect( res.body.name ).to.equal( "tomatoes" );
             } );
         } );
 

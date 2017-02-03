@@ -78,7 +78,7 @@ export class PlantService {
             next();
         } );
     }
-    
+
     public putOne = (req: Request, res: Response, next: NextFunction) => {
         let name = req.body.name;
         let plantingDepth = req.body.plantingDepth;

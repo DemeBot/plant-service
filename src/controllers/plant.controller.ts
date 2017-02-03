@@ -102,7 +102,7 @@ export class PlantController {
                        debug("New Document:" + JSON.stringify(newDoc));
                        observer.next( newDoc as PlantInterface);
                    }
-                   observer.close();
+                   observer.complete();
                });
            });
 
