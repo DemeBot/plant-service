@@ -58,12 +58,40 @@ export class PlantController {
                         observer.next( doc as PlantInterface );
                     } );
                 }
-
+                
                 // close observable
                 observer.complete();
             } );
         } );
     }
+
+    // adding new plants to the database
+    public putOne = ( _name: string,
+            _plantingDepth: number,
+            _daysToGerminate: number,
+            _avgMaxHeight: number,
+            _avgMaxDiameter: number,
+            _maxPlantingDepth?: number,
+            _minPlantingDepth?: number,
+        ) => {
+
+            let doc = {
+                name: _name,
+                plantingDepth: _plantingDepth,
+                daysToGerminate: _daysToGerminate,
+                avgMaxHeight: _avgMaxHeight,
+                avgMaxDiameter: _avgMaxDiameter,
+            };
+
+           if ( typeof _maxPlantingDepth !== "undefined" ) {
+               doc["maxPlantingDepth"] = _maxPlantingDepth;
+           }
+
+           if (typeof _minPlantingDepth !== "undefined" ) {
+               doc["minPlantingDepth"] = _minPlantingDepth;
+           }
+
+        }
 }
 
 export default PlantController;
