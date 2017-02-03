@@ -91,6 +91,21 @@ export class PlantController {
                doc["minPlantingDepth"] = _minPlantingDepth;
            }
 
+           return Observable.create( observer => {
+               this.DB.insert( doc, (err, newDoc) => {
+                   if (err) {
+                       debug( err );
+                       observer.error( err );
+
+                   }
+                   else {
+                       debug("New Document:" + JSON.stringify(newDoc));
+                       observer.next( newDoc as PlantInterface);
+                   }
+                   observer.close();
+               });
+           });
+
         }
 }
 
