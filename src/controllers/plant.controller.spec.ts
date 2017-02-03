@@ -16,6 +16,7 @@ const mockData = [
     { "name": "dill", "plantingDepth": 10, "daysToGerminate": 10, "avgMaxHeight": 1200, "avgMaxDiameter": 750, "_id": "fODAKp2jOOx8Obtl"},
     { "name": "parsley", "plantingDepth": 5, "daysToGerminate": 25, "avgMaxHeight": 750, "avgMaxDiameter": 750, "_id": "p2WfPSLkFoRlphFX"},
 ];
+const newData =  { "name": "tomatoes", "plantingDepth": 50, "daysToGerminate": 10, "avgMaxHeight": 1524, "avgMaxDiameter": 600};
 
 describe ( "Plant Controller", () => {
 
@@ -113,6 +114,55 @@ describe ( "Plant Controller", () => {
             } );
         } );
 
+    } );
+
+    describe ( "putOne()", () => {
+        it ("should return an object", ( done ) => {
+            let returnObject = plantController.putOne(
+                                                        newData.name,
+                                                        newData.plantingDepth,
+                                                        newData.daysToGerminate,
+                                                        newData.avgMaxHeight,
+                                                        newData.avgMaxDiameter
+            );
+
+            returnObject.subscribe(( docs ) => {
+                expect( docs ).to.be.an( "object" );
+                done();
+            });
+        } );
+
+        it ("should have 6 keys", ( done ) => {
+            let returnObject = plantController.putOne(
+                                                        newData.name,
+                                                        newData.plantingDepth,
+                                                        newData.daysToGerminate,
+                                                        newData.avgMaxHeight,
+                                                        newData.avgMaxDiameter
+            );
+
+            returnObject.subscribe(( docs ) => {
+                expect( Object.keys( docs ).length ).to.be.equal( Object.keys( newData ).length + 1 );
+                done();
+            });
+        } );
+
+        it ("should have the same properties as the mock data", ( done ) => {
+            let returnObject = plantController.putOne(
+                                                        newData.name,
+                                                        newData.plantingDepth,
+                                                        newData.daysToGerminate,
+                                                        newData.avgMaxHeight,
+                                                        newData.avgMaxDiameter
+            );
+
+            returnObject.subscribe(( docs ) => {
+                let modifiedNewData = JSON.parse(JSON.stringify(newData));
+                modifiedNewData[ "_id" ] = docs._id;
+                expect( docs ).to.be.deep.equal( modifiedNewData );
+                done();
+            });
+        } );
     } );
 
 } );
