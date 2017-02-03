@@ -58,7 +58,7 @@ export class PlantController {
                         observer.next( doc as PlantInterface );
                     } );
                 }
-                
+
                 // close observable
                 observer.complete();
             } );
