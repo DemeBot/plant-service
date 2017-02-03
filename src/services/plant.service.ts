@@ -78,6 +78,32 @@ export class PlantService {
             next();
         } );
     }
+    
+    public putOne = (req: Request, res: Response, next: NextFunction) => {
+        let name = req.body.name;
+        let plantingDepth = req.body.plantingDepth;
+        let daysToGerminate = req.body.daysToGerminate;
+        let avgMaxHeight = req.body.avgMaxHeight;
+        let avgMaxDiameter = req.body.avgMaxDiameter;
+        let returnedDoc;
+
+        return this.plantController.putOne( name,
+                                            plantingDepth,
+                                            daysToGerminate,
+                                            avgMaxHeight,
+                                            avgMaxDiameter )
+        .subscribe( ( doc ) => {
+            debug( "service putOne: " + JSON.stringify( doc ) );
+            returnedDoc = doc;
+        },
+        ( err ) => {
+            debug( err );
+        },
+        () => {
+            res.send ( returnedDoc );
+        } );
+
+    }
 
 }
 
