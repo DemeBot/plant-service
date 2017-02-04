@@ -26,6 +26,11 @@ export class PlantRouter {
          * @apiGroup Plant
          *
          * @apiSuccess {Plant[]} plants An array of plants.
+         * @apiSuccess (Plant) {string} plant.name Name of the plant
+         * @apiSuccess (Plant) {number} plant.plantingDepth Depth to plant the seed
+         * @apiSuccess (Plant) {number} plant.daysToGerminate Number of days for the seed to germinate
+         * @apiSuccess (Plant) {number} plant.avgMaxHeight Average max height of the plant
+         * @apiSuccess (Plant) {number} plant.avgMaxDiameter Average max diameter of the plant
          */
         this.router.get( "/", this.plantService.getAll );
 
@@ -34,8 +39,13 @@ export class PlantRouter {
          * @apiName Get plant by name
          * @apiGroup Plant
          *
+         * @apiSuccess (Plant) {string} name Name of the plant
+         * @apiSuccess (Plant) {number} plantingDepth Depth to plant the seed
+         * @apiSuccess (Plant) {number} daysToGerminate Number of days for the seed to germinate
+         * @apiSuccess (Plant) {number} avgMaxHeight Average max height of the plant
+         * @apiSuccess (Plant) {number} avgMaxDiameter Average max diameter of the plant
+         *
          * @apiSampleRequest /api/v1/plants/lettuce
-         * @apiSuccess {Plant} plant A plant.
          */
         this.router.get( "/:name", this.plantService.getOne );
         /**
