@@ -25,12 +25,12 @@ export class PlantRouter {
          * @apiName root
          * @apiGroup Plant
          *
-         * @apiSuccess {Plant[]} plants An array of plants.
-         * @apiSuccess (Plant) {string} plant.name Name of the plant
-         * @apiSuccess (Plant) {number} plant.plantingDepth Depth to plant the seed
-         * @apiSuccess (Plant) {number} plant.daysToGerminate Number of days for the seed to germinate
-         * @apiSuccess (Plant) {number} plant.avgMaxHeight Average max height of the plant
-         * @apiSuccess (Plant) {number} plant.avgMaxDiameter Average max diameter of the plant
+         * @apiSuccess (Plants) {Plant[]} plants An array of plants. Each element in the array has the following keys:
+         * @apiSuccess (Plants) {string} plant.name Name of the plant
+         * @apiSuccess (Plants) {number} plant.plantingDepth Depth to plant the seed
+         * @apiSuccess (Plants) {number} plant.daysToGerminate Number of days for the seed to germinate
+         * @apiSuccess (Plants) {number} plant.avgMaxHeight Average max height of the plant
+         * @apiSuccess (Plants) {number} plant.avgMaxDiameter Average max diameter of the plant
          */
         this.router.get( "/", this.plantService.getAll );
 
@@ -53,15 +53,20 @@ export class PlantRouter {
          * @apiName Add a new plant
          * @apiGroup Plant
          *
-         * @apiParam (Plant) {string} name Name of the plant
-         * @apiParam (Plant) {number} plantingDepth Depth to plant the seed
-         * @apiParam (Plant) {number} daysToGerminate Number of days for the seed to germinate
-         * @apiParam (Plant) {number} avgMaxHeight Average max height of the plant
-         * @apiParam (Plant) {number} avgMaxDiameter Average max diameter of the plant
-         * @apiParam (Plant) {number} [maxPlantingDepth] Max depth to plant the seed
-         * @apiParam (Plant) {number} [minPlantingDepth] Min depth to plant the seed
+         * @apiParam (Request Parameters) {string} name Name of the plant
+         * @apiParam (Request Parameters) {number} plantingDepth Depth to plant the seed
+         * @apiParam (Request Parameters) {number} daysToGerminate Number of days for the seed to germinate
+         * @apiParam (Request Parameters) {number} avgMaxHeight Average max height of the plant
+         * @apiParam (Request Parameters) {number} avgMaxDiameter Average max diameter of the plant
+         * @apiParam (Request Parameters) {number} [maxPlantingDepth] Max depth to plant the seed
+         * @apiParam (Request Parameters) {number} [minPlantingDepth] Min depth to plant the seed
          * @apiSampleRequest /api/v1/plants
-         * @apiSuccess {Plant} plant The plant that you added.
+         * @apiSuccess (Successful Response) {string} name Name of the plant
+         * @apiSuccess (Successful Response) {number} plantingDepth Depth to plant the seed
+         * @apiSuccess (Successful Response) {number} daysToGerminate Number of days for the seed to germinate
+         * @apiSuccess (Successful Response) {number} avgMaxHeight Average max height of the plant
+         * @apiSuccess (Successful Response) {number} avgMaxDiameter Average max diameter of the plant
+         * @apiSuccess (Successful Response) {string} _id Database ID
          */
         this.router.post( "/", this.plantService.postOne );
     }
