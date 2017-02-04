@@ -119,7 +119,7 @@ describe ( "Plant Controller", () => {
 
     describe ( "putOne()", () => {
         it ("should return an object", ( done ) => {
-            let returnObject = plantController.putOne(
+            let returnObject = plantController.postOne(
                                                         newData.name,
                                                         newData.plantingDepth,
                                                         newData.daysToGerminate,
@@ -134,7 +134,7 @@ describe ( "Plant Controller", () => {
         } );
 
         it ("should have 6 keys", ( done ) => {
-            let returnObject = plantController.putOne(
+            let returnObject = plantController.postOne(
                                                         newData.name,
                                                         newData.plantingDepth,
                                                         newData.daysToGerminate,
@@ -149,7 +149,7 @@ describe ( "Plant Controller", () => {
         } );
 
         it ("should have the same properties as the mock data", ( done ) => {
-            let returnObject = plantController.putOne(
+            let returnObject = plantController.postOne(
                                                         newData.name,
                                                         newData.plantingDepth,
                                                         newData.daysToGerminate,

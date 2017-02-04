@@ -106,7 +106,7 @@ describe ( "Application Integration Test:", () => {
 
     } );
 
-    describe ( "PUT /api/v1/plants", () => {
+    describe ( "POST /api/v1/plants", () => {
         let requestBody;
         beforeEach( () => {
             requestBody = JSON.parse(JSON.stringify(newData));
@@ -114,7 +114,7 @@ describe ( "Application Integration Test:", () => {
         } );
 
         it( "responds with a single JSON object", () => {
-            return chai.request( app ).put( "/api/v1/plants" )
+            return chai.request( app ).post( "/api/v1/plants" )
             .send(requestBody)
             .then( res => {
                 expect( res.status ).to.equal( 200 );
@@ -124,7 +124,7 @@ describe ( "Application Integration Test:", () => {
         } );
 
         it( "responds with a single JSON object", () => {
-            return chai.request( app ).put( "/api/v1/plants" )
+            return chai.request( app ).post( "/api/v1/plants" )
             .send(requestBody)
             .then( res => {
                 expect( res.body.name ).to.equal( "tomatoes" );

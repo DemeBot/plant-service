@@ -79,7 +79,7 @@ export class PlantService {
         } );
     }
 
-    public putOne = (req: Request, res: Response, next: NextFunction) => {
+    public postOne = (req: Request, res: Response, next: NextFunction) => {
         let name = req.body.name;
         let plantingDepth = req.body.plantingDepth;
         let daysToGerminate = req.body.daysToGerminate;
@@ -87,7 +87,7 @@ export class PlantService {
         let avgMaxDiameter = req.body.avgMaxDiameter;
         let returnedDoc;
 
-        return this.plantController.putOne( name,
+        return this.plantController.postOne( name,
                                             plantingDepth,
                                             daysToGerminate,
                                             avgMaxHeight,

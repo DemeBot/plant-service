@@ -39,7 +39,7 @@ export class PlantRouter {
          */
         this.router.get( "/:name", this.plantService.getOne );
         /**
-         * @api {put} /api/v1/plants Add a new plant
+         * @api {post} /api/v1/plants Add a new plant
          * @apiName Add a new plant
          * @apiGroup Plant
          *
@@ -53,7 +53,7 @@ export class PlantRouter {
          * @apiSampleRequest /api/v1/plants
          * @apiSuccess {Plant} plant The plant that you added.
          */
-        this.router.put( "/", this.plantService.putOne );
+        this.router.post( "/", this.plantService.postOne );
     }
 }
 

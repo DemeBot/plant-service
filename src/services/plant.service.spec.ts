@@ -151,11 +151,11 @@ describe ( "Plant Service", () => {
                 observer.complete();
             } );
 
-            sinon.stub( plantController, "putOne", () => { return observer; } );
+            sinon.stub( plantController, "postOne", () => { return observer; } );
         } );
 
         after( () => {
-            plantController.putOne.restore();
+            plantController.postOne.restore();
         } );
 
         beforeEach( () => {
@@ -179,18 +179,18 @@ describe ( "Plant Service", () => {
         } );
 
         it( "should return an object", () => {
-            plantService.putOne( request, response, next );
+            plantService.postOne( request, response, next );
             expect( callResult ).to.be.an( "object" );
         } );
 
         it( "should have name property", () => {
-            plantService.putOne( request, response, next );
+            plantService.postOne( request, response, next );
             expect( callResult ).to.haveOwnProperty( "name" );
             expect( callResult.name ).to.equal( "tomatoes" );
         } );
 
         it( "should get back mock data", () => {
-            plantService.putOne( request, response, next );
+            plantService.postOne( request, response, next );
             expect( Object.keys( callResult ).length ).to.equal( Object.keys( newData ).length );
             expect( callResult ).to.deep.equal( newData );
         } );

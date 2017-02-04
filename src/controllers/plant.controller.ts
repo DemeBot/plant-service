@@ -66,7 +66,7 @@ export class PlantController {
     }
 
     // adding new plants to the database
-    public putOne = ( _name: string,
+    public postOne = ( _name: string,
             _plantingDepth: number,
             _daysToGerminate: number,
             _avgMaxHeight: number,
