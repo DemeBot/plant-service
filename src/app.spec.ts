@@ -117,7 +117,7 @@ describe ( "Application Integration Test:", () => {
             return chai.request( app ).post( "/api/v1/plants" )
             .send(requestBody)
             .then( res => {
-                expect( res.status ).to.equal( 200 );
+                expect( res.status ).to.equal( 201 );
                 expect( res ).to.be.json;
                 expect( res.body ).to.be.an("object");
             } );
@@ -128,6 +128,14 @@ describe ( "Application Integration Test:", () => {
             .send(requestBody)
             .then( res => {
                 expect( res.body.name ).to.equal( "tomatoes" );
+            } );
+        } );
+
+        it( "should have an _id field", () => {
+            return chai.request( app ).post( "/api/v1/plants" )
+            .send(requestBody)
+            .then( res => {
+                expect( res.body ).to.include.keys( "_id" );
             } );
         } );
 

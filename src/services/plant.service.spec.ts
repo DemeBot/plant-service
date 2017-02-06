@@ -139,9 +139,8 @@ describe ( "Plant Service", () => {
 
     } );
 
-    describe ( "putOne()", () => {
+    describe ( "postOne()", () => {
 
-        let callResult;
         let request, response, next;
         let requestBody;
 
@@ -163,16 +162,12 @@ describe ( "Plant Service", () => {
             delete requestBody["_id"];
 
             request = httpMocks.createRequest( {
-                method: "PUT",
+                method: "POST",
                 url: "/",
                 body: requestBody
             } );
 
-            response = {
-                send: ( input ) => {
-                    callResult = input;
-                }
-            };
+            response = httpMocks.createResponse();
 
             next = () => {};
 
@@ -180,17 +175,20 @@ describe ( "Plant Service", () => {
 
         it( "should return an object", () => {
             plantService.postOne( request, response, next );
+            let callResult = response._getData();
             expect( callResult ).to.be.an( "object" );
         } );
 
         it( "should have name property", () => {
             plantService.postOne( request, response, next );
+            let callResult = response._getData();
             expect( callResult ).to.haveOwnProperty( "name" );
             expect( callResult.name ).to.equal( "tomatoes" );
         } );
 
         it( "should get back mock data", () => {
             plantService.postOne( request, response, next );
+            let callResult = response._getData();
             expect( Object.keys( callResult ).length ).to.equal( Object.keys( newData ).length );
             expect( callResult ).to.deep.equal( newData );
         } );

@@ -23,7 +23,7 @@ export class PlantService {
         return this.plantController.getAll()
         // and wait for response
         .subscribe( ( doc ) => {
-            // once a response is recieved
+            // once a response is received
 
             // log to debug
             debug( "service getAll: " + JSON.stringify( doc ) );
@@ -42,7 +42,7 @@ export class PlantService {
         } );
     }
 
-    // filter through rquest to find request parameters then pass them into the controller function.
+    // filter through request to find request parameters then pass them into the controller function.
     public getOne = ( req: Request, res: Response, next: NextFunction ) => {
 
         // create storage variable for the plants
@@ -55,7 +55,7 @@ export class PlantService {
         return this.plantController.getOne( query )
         // and wait for response
         .subscribe( ( doc ) => {
-            // once a response is recieved
+            // once a response is received
 
             // log to debug
             debug( "service getOne: " + JSON.stringify( doc ) );
@@ -100,7 +100,7 @@ export class PlantService {
             debug( err );
         },
         () => {
-            res.send ( returnedDoc );
+            res.status( 201 ).send ( returnedDoc );
         } );
 
     }
