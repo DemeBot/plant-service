@@ -18,6 +18,8 @@ const mockData = [
     { "name": "parsley", "plantingDepth": 5, "daysToGerminate": 25, "avgMaxHeight": 750, "avgMaxDiameter": 750, "_id": "p2WfPSLkFoRlphFX"},
 ];
 
+const newData =  { "name": "tomatoes", "plantingDepth": 50, "daysToGerminate": 10, "avgMaxHeight": 1524, "avgMaxDiameter": 600, "_id": "fV12zl1M5j27gIY8"};
+
 describe ( "Plant Service", () => {
 
     let plantService: PlantService;
@@ -132,9 +134,64 @@ describe ( "Plant Service", () => {
         it( "should get back mock data", () => {
             plantService.getOne( request, response, next );
             expect( Object.keys( callResult ).length ).to.equal( Object.keys( mockData[0] ).length );
-            expect( callResult ).to.equal( mockData[0] );
+            expect( callResult ).to.deep.equal( mockData[0] );
         } );
 
     } );
 
+    describe ( "postOne()", () => {
+
+        let request, response, next;
+        let requestBody;
+
+        before( () => {
+            let observer = Observable.create( observer => {
+                observer.next( newData );
+                observer.complete();
+            } );
+
+            sinon.stub( plantController, "postOne", () => { return observer; } );
+        } );
+
+        after( () => {
+            plantController.postOne.restore();
+        } );
+
+        beforeEach( () => {
+            requestBody = JSON.parse(JSON.stringify(newData));
+            delete requestBody["_id"];
+
+            request = httpMocks.createRequest( {
+                method: "POST",
+                url: "/",
+                body: requestBody
+            } );
+
+            response = httpMocks.createResponse();
+
+            next = () => {};
+
+        } );
+
+        it( "should return an object", () => {
+            plantService.postOne( request, response, next );
+            let callResult = response._getData();
+            expect( callResult ).to.be.an( "object" );
+        } );
+
+        it( "should have name property", () => {
+            plantService.postOne( request, response, next );
+            let callResult = response._getData();
+            expect( callResult ).to.haveOwnProperty( "name" );
+            expect( callResult.name ).to.equal( "tomatoes" );
+        } );
+
+        it( "should get back mock data", () => {
+            plantService.postOne( request, response, next );
+            let callResult = response._getData();
+            expect( Object.keys( callResult ).length ).to.equal( Object.keys( newData ).length );
+            expect( callResult ).to.deep.equal( newData );
+        } );
+
+    } );
 } );

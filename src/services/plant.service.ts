@@ -23,7 +23,7 @@ export class PlantService {
         return this.plantController.getAll()
         // and wait for response
         .subscribe( ( doc ) => {
-            // once a response is recieved
+            // once a response is received
 
             // log to debug
             debug( "service getAll: " + JSON.stringify( doc ) );
@@ -42,7 +42,7 @@ export class PlantService {
         } );
     }
 
-    // filter through rquest to find request parameters then pass them into the controller function.
+    // filter through request to find request parameters then pass them into the controller function.
     public getOne = ( req: Request, res: Response, next: NextFunction ) => {
 
         // create storage variable for the plants
@@ -55,7 +55,7 @@ export class PlantService {
         return this.plantController.getOne( query )
         // and wait for response
         .subscribe( ( doc ) => {
-            // once a response is recieved
+            // once a response is received
 
             // log to debug
             debug( "service getOne: " + JSON.stringify( doc ) );
@@ -77,6 +77,32 @@ export class PlantService {
             // call next function in express middleware
             next();
         } );
+    }
+
+    public postOne = (req: Request, res: Response, next: NextFunction) => {
+        let name = req.body.name;
+        let plantingDepth = req.body.plantingDepth;
+        let daysToGerminate = req.body.daysToGerminate;
+        let avgMaxHeight = req.body.avgMaxHeight;
+        let avgMaxDiameter = req.body.avgMaxDiameter;
+        let returnedDoc;
+
+        return this.plantController.postOne( name,
+                                            plantingDepth,
+                                            daysToGerminate,
+                                            avgMaxHeight,
+                                            avgMaxDiameter )
+        .subscribe( ( doc ) => {
+            debug( "service putOne: " + JSON.stringify( doc ) );
+            returnedDoc = doc;
+        },
+        ( err ) => {
+            debug( err );
+        },
+        () => {
+            res.status( 201 ).send ( returnedDoc );
+        } );
+
     }
 
 }
