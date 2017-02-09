@@ -1,4 +1,6 @@
 # DemeBot Plant Service
+[![Build Status](https://travis-ci.org/DemeBot/plant-service.svg)](https://travis-ci.org/DemeBot/plant-service)
+
 Service which saves and stores data about plants.
 
 ## Getting started
