@@ -21,7 +21,7 @@ gulp.task( 'server', [ 'transpile', 'apidoc' ], () => {
     if ( node ) node.kill()
 
     // spawn a new process
-    node = spawn( 'node', [ 'dist/server.js' ], { stdio: 'inherit' } );
+    node = spawn( 'node', [ '.dist/server.js' ], { stdio: 'inherit' } );
 
     // watch for any problems
     node.on( 'close', function ( code ) {
@@ -52,7 +52,7 @@ gulp.task( 'transpile', () => {
     .pipe( tsProject() );
 
     // hand back js destination files
-    return tsResults.js.pipe( gulp.dest( 'dist' ) );
+    return tsResults.js.pipe( gulp.dest( '.dist' ) );
 } );
 
 // run tests using mocha 
