@@ -37,8 +37,8 @@ class App {
 
   // Configure API endpoints.
   private routes(): void {
-    this.express.use( "/doc/v1", express.static( __dirname + "/apidoc" ) );
-    this.express.use( "/api/v1/plants", this.plantRouter.router );
+    this.express.use( "/doc", express.static( __dirname + "/apidoc" ) );
+    this.express.use( "/api", this.plantRouter.router );
   }
 
 }
