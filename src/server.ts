@@ -5,7 +5,7 @@ import app from "./app";
 
 debug( "ts-express:server" );
 
-const port = normalizePort( process.env.PORT || 3000 );
+const port = normalizePort( process.env.SERVER_PORT || 8080 );
 let appExpress = new app().express;
 appExpress.set( "port", port );
 
