@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from "express";
 const debug = require("debug");
 
 import PlantController from "./../controllers/plant.controller";
+import PlantInterface from "./../models/plant.interface";
 
 // Middleware for getting and setting plant data
 export class PlantService {
@@ -14,95 +15,72 @@ export class PlantService {
     }
 
     // get all plants possible
-    public getAll = ( req: Request, res: Response, next: NextFunction ) => {
+    public get = ( request: Request, response: Response, next: NextFunction ) => {
 
-        // create storage variable for the plants
-        let plants = [];
-
-        // query the controller function
-        return this.plantController.getAll()
-        // and wait for response
-        .subscribe( ( doc ) => {
-            // once a response is received
-
-            // log to debug
-            debug( "service getAll: " + JSON.stringify( doc ) );
-
-            // aggregate the results
-            plants = plants.concat( doc );
-        },
-        ( err ) => {
-            debug( err );
-        },
-        () => {
-            res.send( { plants: plants } );
-
-            // call next function in express middleware
-            next();
-        } );
-    }
-
-    // filter through request to find request parameters then pass them into the controller function.
-    public getOne = ( req: Request, res: Response, next: NextFunction ) => {
-
-        // create storage variable for the plants
-        let plants = [];
 
         // find desired elements in request parameters
-        let query: string = req.params.name;
+        let getDeleted: boolean = request.query.getDeleted;
+        let id: number = request.query.id;
+        let name: string = request.query.name;
 
-        // query the plant controller with desired parameters
-        return this.plantController.getOne( query )
-        // and wait for response
-        .subscribe( ( doc ) => {
-            // once a response is received
-
-            // log to debug
-            debug( "service getOne: " + JSON.stringify( doc ) );
-
-            // aggregate the results
-            plants = plants.concat( doc );
-        },
-        ( err ) => {
-            debug( err );
-        },
-        () => {
-            // if no plants were found send back a 404
-            if ( plants.length < 1 ) res.status( 404 ).send( "Found no plants named:" + query );
+        // query the controller function
+        this.plantController
+        .get( id, name, getDeleted )
+        .then( ( plants: PlantInterface[] ) => {
+            if ( plants.length < 1 ) response.status( 404 ).send();
             else {
-                // send the last plant found in the list
-                res.send( plants[ plants.length - 1 ] );
+                response.status( 200 ).send( { plants : plants } );
             }
-
-            // call next function in express middleware
-            next();
+        } )
+        .catch( ( error: Error ) => {
+            console.log( error );
+            response.status( 500 ).send("Server error");
         } );
     }
 
-    public postOne = (req: Request, res: Response, next: NextFunction) => {
-        let name = req.body.name;
-        let plantingDepth = req.body.plantingDepth;
-        let daysToGerminate = req.body.daysToGerminate;
-        let avgMaxHeight = req.body.avgMaxHeight;
-        let avgMaxDiameter = req.body.avgMaxDiameter;
+    public post = ( request: Request, response: Response, next: NextFunction ) => {
+        let name = request.body.name;
+        let depth = request.body.depth;
+        let daysToGerminate = request.body.daysToGerminate;
+        let height = request.body.height;
+        let width = request.body.width;
+        let description = request.body.description;
         let returnedDoc;
 
-        return this.plantController.postOne( name,
-                                            plantingDepth,
-                                            daysToGerminate,
-                                            avgMaxHeight,
-                                            avgMaxDiameter )
-        .subscribe( ( doc ) => {
-            debug( "service putOne: " + JSON.stringify( doc ) );
-            returnedDoc = doc;
-        },
-        ( err ) => {
-            debug( err );
-        },
-        () => {
-            res.status( 201 ).send ( returnedDoc );
+        return this.plantController
+        .post(
+            name,
+            depth,
+            daysToGerminate,
+            height,
+            width,
+            description
+        )
+        .then( ( new_plant: PlantInterface ) => {
+            console.log( JSON.stringify( new_plant ) );
+            response.status( 201 ).send( new_plant )
+        } )
+        .catch( ( error: Error ) => {
+            console.log( error );
+            response.status( 500 ).send("Server error");
         } );
 
+    }
+
+    public delete = ( parameter: Request, response: Response, next: NextFunction ) => {
+        let id = parameter.body.id;
+        
+        return this.plantController
+        .delete( id )
+        .then( ( deletedPlants: PlantInterface[] ) => {
+            console.log( "deleted plant id: " + id );
+            if ( deletedPlants.length > 0 )response.status( 204 ).send( deletedPlants );
+            response.status( 404 ).send();
+        } )
+        .catch( ( error: Error ) => {
+            console.log( error );
+            response.status( 500 ).send();
+        } );
     }
 
 }

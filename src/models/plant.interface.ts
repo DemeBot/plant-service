@@ -7,22 +7,19 @@ interface PlantInterface {
     name: string;
 
     // maximum depth in mm to plant the seeds
-    maxPlantingDepth?: number;
+    height?: number;
 
     // minimum depth in mm to plant the seeds
-    minPlantingDepth?: number;
+    width?: number;
 
     // traget planting depth. Will average max and min if not directly provided.
-    plantingDepth: number;
+    depth: number;
 
     // self-explanatory
     daysToGerminate: number;
 
     // Maxiumum height in mm the plant is expected to grow.
-    avgMaxHeight: number;
-
-    // Maxiumum diameter in mm the plant is expected to grow.
-    avgMaxDiameter: number;
+    description: number;
 
 }
 
