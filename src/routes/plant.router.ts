@@ -25,7 +25,7 @@ export class PlantRouter {
          * 
          * @apiParam (Request Parameters) {string} name Name of the plant
          * @apiParam (Request Parameters) {number} depth Depth to plant the seed
-         * @apiParam (Request Parameters) {number} daysToGerminate Number of days for the seed to germinate
+         * @apiParam (Request Parameters) {number} days_to_germinate Number of days for the seed to germinate
          * @apiParam (Request Parameters) {number} height Typical max height of the plant
          * @apiParam (Request Parameters) {number} width Typical max width of the plant
          * @apiParam (Request Parameters) {string} description Description of the plant
@@ -37,7 +37,7 @@ export class PlantRouter {
          * @apiSuccess (Successful Response) {number} plant.id Database id of the plant
          * @apiSuccess (Successful Response) {string} plant.name Name of the plant
          * @apiSuccess (Successful Response) {number} plant.depth Depth to plant the seed
-         * @apiSuccess (Successful Response) {number} plant.daysToGerminate Number of days for the seed to germinate
+         * @apiSuccess (Successful Response) {number} plant.days_to_germinate Number of days for the seed to germinate
          * @apiSuccess (Successful Response) {number} plant.height Typical max height of the plant
          * @apiSuccess (Successful Response) {number} plant.width Typical max width of the plant
          * @apiSuccess (Successful Response) {number} plant.diameter Typical max diameter of the plant
@@ -51,7 +51,7 @@ export class PlantRouter {
          *
          * @apiParam (Request Parameters) {number} [id] Database id of the plant
          * @apiParam (Request Parameters) {string} [name] Name of the plant
-         * @apiParam (Request Parameters) {boolean} [getDeleted=false] Name of the plant
+         * @apiParam (Request Parameters) {boolean} [get_deleted=false] Name of the plant
          * @apiSuccess (Successful Response) {[plant]} plants An array of plants. Each element in the array has the following keys:
          * @apiUse PlantResponse
          */

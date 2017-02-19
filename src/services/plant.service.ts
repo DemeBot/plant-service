@@ -19,13 +19,13 @@ export class PlantService {
 
 
         // find desired elements in request parameters
-        let getDeleted: boolean = request.query.getDeleted;
+        let get_deleted: boolean = request.query.get_deleted;
         let id: number = request.query.id;
         let name: string = request.query.name;
 
         // query the controller function
         this.plantController
-        .get( id, name, getDeleted )
+        .get( id, name, get_deleted )
         .then( ( plants: PlantInterface[] ) => {
             if ( plants.length < 1 ) response.status( 404 ).send();
             else {
@@ -41,7 +41,7 @@ export class PlantService {
     public post = ( request: Request, response: Response, next: NextFunction ) => {
         let name = request.body.name;
         let depth = request.body.depth;
-        let daysToGerminate = request.body.daysToGerminate;
+        let days_to_germinate = request.body.days_to_germinate;
         let height = request.body.height;
         let width = request.body.width;
         let description = request.body.description;
@@ -51,7 +51,7 @@ export class PlantService {
         .post(
             name,
             depth,
-            daysToGerminate,
+            days_to_germinate,
             height,
             width,
             description
