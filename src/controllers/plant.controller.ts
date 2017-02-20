@@ -1,7 +1,7 @@
 const debug = require("debug");
 
-import  * as mysql from 'mysql';
-import MySQLConnector from './../connector/mysql.connector';
+import  * as mysql from "mysql";
+import MySQLConnector from "./../connector/mysql.connector";
 
 import PlantInterface from "./../models/plant.interface";
 
@@ -16,7 +16,7 @@ export class PlantController {
     }
 
     // Call plant database for all plants
-    public get( id?: number, name?:string, getDeleted: boolean = false ): Promise<PlantInterface[]> {
+    public get( id?: number, name?: string, getDeleted: boolean = false ): Promise<PlantInterface[]> {
 
         // Build MySQL query
         let query: string = "SELECT * FROM PLANT_TYPES";
@@ -26,11 +26,11 @@ export class PlantController {
             queryParams.push( "`deleted_at` IS NULL" );
         }
 
-        if ( id !== undefined && String( id ) !== '' ) {
+        if ( id !== undefined && String( id ) !== "" ) {
             queryParams.push( "`id` = " + id );
         }
 
-        if ( name !== undefined && name !== '' ) {
+        if ( name !== undefined && name !== "" ) {
             queryParams.push( "`name` = \'" + name + "\'" );
         }
 
@@ -49,13 +49,13 @@ export class PlantController {
                 if ( error ) {
                     reject( error );
                 }
-                
+
                 // Otherwise resolve the promise with the MySQL results
                 else {
                     debug( JSON.stringify( results ) );
                     resolve( results );
-                } 
-            })
+                }
+            } );
         } );
     }
 
@@ -68,7 +68,7 @@ export class PlantController {
          _width: number,
          _description: string
          ): Promise<PlantInterface> {
-        
+
         let doc = {
             name: _name,
             depth: _days_to_germinate,
@@ -90,7 +90,7 @@ export class PlantController {
                     this.get( results.insertId )
                     .then( ( result: PlantInterface[] ) => {
                         resolve( result[0] );
-                    } )
+                    } );
                 }
             } );
         } );
@@ -117,7 +117,7 @@ export class PlantController {
             .catch( ( error ) => {
                 reject( error );
             } );
-        } ); 
+        } );
     }
 }
 

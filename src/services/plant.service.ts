@@ -58,7 +58,7 @@ export class PlantService {
         )
         .then( ( new_plant: PlantInterface ) => {
             console.log( JSON.stringify( new_plant ) );
-            response.status( 201 ).send( new_plant )
+            response.status( 201 ).send( new_plant );
         } )
         .catch( ( error: Error ) => {
             console.log( error );
@@ -69,7 +69,7 @@ export class PlantService {
 
     public delete = ( parameter: Request, response: Response, next: NextFunction ) => {
         let id = parameter.body.id;
-        
+
         return this.plantController
         .delete( id )
         .then( ( deletedPlants: PlantInterface[] ) => {

@@ -44,7 +44,7 @@ describe ( "Plant Controller", () => {
         } );
 
         it( "should return an array", ( done ) => {
-            let retObs = plantController.getAll();
+            let retObs = plantController.get();
 
             retObs.subscribe( ( docs ) => {
                 expect( docs ).to.be.an("array");
@@ -53,7 +53,7 @@ describe ( "Plant Controller", () => {
         } );
 
         it( "should return the mock data", ( done ) => {
-            let retObs = plantController.getAll();
+            let retObs = plantController.get();
 
             retObs.subscribe( ( docs ) => {
                 expect( docs ).to.deep.equal( mockData );
@@ -62,7 +62,7 @@ describe ( "Plant Controller", () => {
         } );
 
         it( "should return the correct number of objects", ( done ) => {
-            let retObs = plantController.getAll();
+            let retObs = plantController.get();
 
             retObs.subscribe( ( docs ) => {
                 expect( docs.length ).to.equal(mockData.length);
@@ -89,7 +89,7 @@ describe ( "Plant Controller", () => {
         } );
 
         it( "should return an object", ( done ) => {
-            let retObs = plantController.getOne( "lettuce" );
+            let retObs = plantController.get( "lettuce" );
 
             retObs.subscribe( ( docs ) => {
                 expect( docs ).to.be.an( "object" );
@@ -98,7 +98,7 @@ describe ( "Plant Controller", () => {
         } );
 
         it( "should return the mock data", ( done ) => {
-            let retObs = plantController.getOne( "lettuce" );
+            let retObs = plantController.get( "lettuce" );
 
             retObs.subscribe( ( docs ) => {
                 expect( docs ).to.deep.equal(mockData[0]);
@@ -107,7 +107,7 @@ describe ( "Plant Controller", () => {
         } );
 
         it( "should return the correct number of properties", ( done ) => {
-            let retObs = plantController.getOne( "lettuce" );
+            let retObs = plantController.get( "lettuce" );
 
             retObs.subscribe( ( docs ) => {
                 expect( Object.keys( docs ).length ).to.equal( Object.keys( mockData[0] ).length );
@@ -119,7 +119,7 @@ describe ( "Plant Controller", () => {
 
     describe ( "putOne()", () => {
         it ("should return an object", ( done ) => {
-            let returnObject = plantController.postOne(
+            let returnObject = plantController.post(
                                                         newData.name,
                                                         newData.plantingDepth,
                                                         newData.daysToGerminate,
@@ -134,7 +134,7 @@ describe ( "Plant Controller", () => {
         } );
 
         it ("should have 6 keys", ( done ) => {
-            let returnObject = plantController.postOne(
+            let returnObject = plantController.post(
                                                         newData.name,
                                                         newData.plantingDepth,
                                                         newData.daysToGerminate,
@@ -149,7 +149,7 @@ describe ( "Plant Controller", () => {
         } );
 
         it ("should have the same properties as the mock data", ( done ) => {
-            let returnObject = plantController.postOne(
+            let returnObject = plantController.post(
                                                         newData.name,
                                                         newData.plantingDepth,
                                                         newData.daysToGerminate,
