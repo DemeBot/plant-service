@@ -22,10 +22,10 @@ export class PlantRouter {
     init() {
         /**
          * @apiDefine PlantRequest
-         * 
+         *
          * @apiParam (Request Parameters) {string} name Name of the plant
          * @apiParam (Request Parameters) {number} depth Depth to plant the seed
-         * @apiParam (Request Parameters) {number} days_to_germinate Number of days for the seed to germinate
+         * @apiParam (Request Parameters) {number} days_to_harvest Number of days for the plant to grow
          * @apiParam (Request Parameters) {number} height Typical max height of the plant
          * @apiParam (Request Parameters) {number} width Typical max width of the plant
          * @apiParam (Request Parameters) {string} description Description of the plant
@@ -33,11 +33,11 @@ export class PlantRouter {
 
         /**
          * @apiDefine PlantResponse
-         * 
+         *
          * @apiSuccess (Successful Response) {number} plant.id Database id of the plant
          * @apiSuccess (Successful Response) {string} plant.name Name of the plant
          * @apiSuccess (Successful Response) {number} plant.depth Depth to plant the seed
-         * @apiSuccess (Successful Response) {number} plant.days_to_germinate Number of days for the seed to germinate
+         * @apiSuccess (Successful Response) {number} plant.days_to_harvest Number of days for the plant to grow
          * @apiSuccess (Successful Response) {number} plant.height Typical max height of the plant
          * @apiSuccess (Successful Response) {number} plant.width Typical max width of the plant
          * @apiSuccess (Successful Response) {number} plant.diameter Typical max diameter of the plant
@@ -61,7 +61,7 @@ export class PlantRouter {
          * @api {post} /api Add a new plant
          * @apiName Add a new plant
          * @apiGroup Plant
-         * 
+         *
          * @apiUse PlantRequest
          * @apiUse PlantResponse
          */
@@ -71,7 +71,7 @@ export class PlantRouter {
          * @api {delete} /api Delete a plant by id
          * @apiName Delete a  plant
          * @apiGroup Plant
-         * 
+         *
          * @apiParam (Request Parameters) {number} id Database id of the plant
          */
         this.router.delete( "/", this.plantService.delete );

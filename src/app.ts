@@ -34,9 +34,9 @@ class App {
       res.header( "Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept" );
       next();
     } );
-    this.express.use( "/doc", this.replaceTemplateURL )
+    this.express.use( "/doc", this.replaceTemplateURL );
   }
-mys
+
   // Configure API endpoints.
   private routes(): void {
     this.express.use( "/doc", express.static( __dirname + "/apidoc" ) );
@@ -46,12 +46,12 @@ mys
   private replaceTemplateURL = interceptor( ( request: express.Request, response: express.Response ) => {
     return {
       isInterceptable: () => {
-        console.log( response.get( 'Content-Type' ) );
-        return /application\/javascript/.test( response.get('Content-Type') );
+        console.log( response.get( "Content-Type" ) );
+        return /application\/javascript/.test( response.get("Content-Type") );
       },
       intercept: ( body, send ) => {
         new Promise( ( resolve, reject ) => {
-          let sourceUrl = request.headers[ "x-forwarded-url" ];
+          let sourceUrl = ( request.headers[ "x-forwarded-url" ] || "localhost:8080" );
           console.log( "SourceURL:" + sourceUrl );
           resolve( sourceUrl.replace( "/doc" + "/api_data.js", "" ) );
         } )
@@ -59,7 +59,7 @@ mys
           send( body.split( "<base-doc-url>" ).join( url ) );
         } );
       }
-    }
+    };
   } );
 
 }

@@ -41,7 +41,7 @@ export class PlantService {
     public post = ( request: Request, response: Response, next: NextFunction ) => {
         let name = request.body.name;
         let depth = request.body.depth;
-        let days_to_germinate = request.body.days_to_germinate;
+        let days_to_harvest = request.body.days_to_harvest;
         let height = request.body.height;
         let width = request.body.width;
         let description = request.body.description;
@@ -51,14 +51,14 @@ export class PlantService {
         .post(
             name,
             depth,
-            days_to_germinate,
+            days_to_harvest,
             height,
             width,
             description
         )
         .then( ( new_plant: PlantInterface ) => {
             console.log( JSON.stringify( new_plant ) );
-            response.status( 201 ).send( new_plant )
+            response.status( 201 ).send( new_plant );
         } )
         .catch( ( error: Error ) => {
             console.log( error );
@@ -69,7 +69,7 @@ export class PlantService {
 
     public delete = ( parameter: Request, response: Response, next: NextFunction ) => {
         let id = parameter.body.id;
-        
+
         return this.plantController
         .delete( id )
         .then( ( deletedPlants: PlantInterface[] ) => {
