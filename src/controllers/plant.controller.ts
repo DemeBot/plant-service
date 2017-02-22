@@ -54,7 +54,7 @@ export class PlantController {
                     debug( JSON.stringify( results ) );
                     resolve( results );
                 }
-            });
+            } );
         } );
     }
 
