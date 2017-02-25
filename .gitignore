@@ -46,8 +46,11 @@ jspm_packages
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variables file
-.env
+# dotsecret files
+.secret.*
+
+# Folders which begin with a dot
+.*/
 
 # Build folder
 .dist

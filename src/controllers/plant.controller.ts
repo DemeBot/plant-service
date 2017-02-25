@@ -1,112 +1,123 @@
-import { Observable } from "rxjs/Observable";
-import * as NeDB from "nedb";
-
 const debug = require("debug");
 
-import PlantInterface from "./../data/models/plant.interface";
+import  * as mysql from "mysql";
+import MySQLConnector from "./../connector/mysql.connector";
+
+import PlantInterface from "./../models/plant.interface";
 
 export class PlantController {
 
-    private DB: NeDB;
+    private DB: mysql.IPool;
 
-    constructor( DB?: NeDB ) {
+    constructor( DB?: mysql.IPool ) {
         // instantiate DB by first checking for injected DB and creating one if one wasn't injected
-        this.DB = ( typeof DB !== "undefined" ) ? DB : new NeDB( { filename: __dirname + "/../data/plant.db", autoload: true } );
+        this.DB = ( DB || new MySQLConnector().pool );
     }
 
-    // Call NeDB plant database for all plants
-    public getAll = () => {
-        // return observable so that a caller can subscribe to it and wait for a response
-        return Observable.create( observer => {
-            // get all results from DB by searching for any match
-            this.DB.find( {}, ( err: Error, docs: PlantInterface[] ) => {
-                // if an error is found, pass the error to the subscriber
-                if ( err ) observer.error( err );
-                // otherwise pass any results found to the subscriber
+    // Call plant database for all plants
+    public get( id?: number, name?: string, getDeleted: boolean = false ): Promise<PlantInterface[]> {
+
+        // Build MySQL query
+        let query: string = "SELECT * FROM PLANT_TYPES";
+        let queryParams: string[] = [];
+
+        if ( !getDeleted ) {
+            queryParams.push( "`ended_at` IS NULL" );
+        }
+
+        if ( id !== undefined && String( id ) !== "" ) {
+            queryParams.push( "`id` = " + mysql.escape( id ) );
+        }
+
+        if ( name !== undefined && name !== "" ) {
+            queryParams.push( "`name` = " + mysql.escape( name ) );
+        }
+
+        if ( queryParams.length > 0 ) {
+            query += " WHERE " + queryParams.join( " AND " );
+        }
+
+        // Return Promise
+        return new Promise( ( resolve, reject ) => {
+
+            console.log( query );
+            // Run MySQL Query
+            this.DB.query( query, ( error: Error, results: PlantInterface[] ) => {
+
+                // If there is an error, reject the promise with the error.
+                if ( error ) {
+                    reject( error );
+                }
+
+                // Otherwise resolve the promise with the MySQL results
                 else {
-                    // log to debug
-                    debug( "controller getAll: " + JSON.stringify( docs ) );
-
-                    // notify subscribers of a response
-                    observer.next( docs as PlantInterface[] );
+                    debug( JSON.stringify( results ) );
+                    resolve( results );
                 }
-
-                // close observable
-                observer.complete();
-            } );
-        } );
-    }
-
-    // Find plants matching requested name
-    public getOne = ( name: string ) => {
-        // return observable so that a caller can subscribe to it and wait for a response
-        return Observable.create( observer => {
-            // get results which match desire name from DB by searching for a match
-            this.DB.find( { name: name }, ( err: Error, docs: PlantInterface[] ) => {
-                // if an error is found, pass the error to the subscriber
-                if ( err ) {
-                    debug( err );
-                    observer.error( err );
-                }
-                else if ( docs.length === 0 ) {
-                    debug("NO DOCS FOUND");
-                }
-                // otherwise pass any results found to the subscriber
-                else {
-                    docs.forEach( ( doc ) => {
-                        debug( "controller getAll: " + JSON.stringify( doc ) );
-                        observer.next( doc as PlantInterface );
-                    } );
-                }
-
-                // close observable
-                observer.complete();
             } );
         } );
     }
 
     // adding new plants to the database
-    public postOne = ( _name: string,
-            _plantingDepth: number,
-            _daysToGerminate: number,
-            _avgMaxHeight: number,
-            _avgMaxDiameter: number,
-            _maxPlantingDepth?: number,
-            _minPlantingDepth?: number,
-        ) => {
+    public post (
+         _name: string,
+         _depth: number,
+         _days_to_harvest: number,
+         _height: number,
+         _width: number,
+         _description: string
+         ): Promise<PlantInterface> {
 
-            let doc = {
-                name: _name,
-                plantingDepth: _plantingDepth,
-                daysToGerminate: _daysToGerminate,
-                avgMaxHeight: _avgMaxHeight,
-                avgMaxDiameter: _avgMaxDiameter,
-            };
+        let doc = {
+            name: _name,
+            depth: _days_to_harvest,
+            days_to_harvest: _days_to_harvest,
+            height: _height,
+            width: _width,
+            description: _description
+        };
 
-           if ( typeof _maxPlantingDepth !== "undefined" ) {
-               doc["maxPlantingDepth"] = _maxPlantingDepth;
-           }
+        // Build MySQL query
+        let query: string = "INSERT INTO `PLANT_TYPES` SET ?";
 
-           if (typeof _minPlantingDepth !== "undefined" ) {
-               doc["minPlantingDepth"] = _minPlantingDepth;
-           }
+        return new Promise( ( resolve, reject ) => {
+            console.log( query );
+            this.DB.query( query, doc, ( error: Error, results ) => {
+                if ( error ) reject( error );
+                else {
+                    console.log( "Inserted ID: " + results.insertId );
+                    this.get( results.insertId )
+                    .then( ( result: PlantInterface[] ) => {
+                        resolve( result[0] );
+                    } );
+                }
+            } );
+        } );
+    }
 
-           return Observable.create( observer => {
-               this.DB.insert( doc, (err, newDoc) => {
-                   if (err) {
-                       debug( err );
-                       observer.error( err );
+    public delete (
+        _id: number
+    ): Promise<PlantInterface[]> {
+        // Build MySQL query
+        let query: string = "UPDATE `PLANT_TYPES` SET `ended_at` = NOW()  WHERE `id` = " + mysql.escape( _id );
 
-                   }
-                   else {
-                       debug("New Document:" + JSON.stringify(newDoc));
-                       observer.next( newDoc as PlantInterface);
-                   }
-                   observer.complete();
-               });
-           });
+        return new Promise( ( resolve, reject ) => {
+            console.log( query );
 
-        }
+            this.get( _id )
+            .then( ( results: PlantInterface[] ) => {
+                if ( results.length > 0 )
+                this.DB.query( query, ( error, result ) => {
+                    if ( error ) reject( error );
+                    resolve( results );
+                } );
+                else resolve( results );
+            } )
+            .catch( ( error ) => {
+                reject( error );
+            } );
+        } );
+    }
 }
 
 export default PlantController;

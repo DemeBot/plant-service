@@ -21,54 +21,60 @@ export class PlantRouter {
 
     init() {
         /**
-         * @api {get} /api/v1/plants Get all plants
+         * @apiDefine PlantRequest
+         *
+         * @apiParam (Request Parameters) {string} name Name of the plant
+         * @apiParam (Request Parameters) {number} depth Depth to plant the seed
+         * @apiParam (Request Parameters) {number} days_to_harvest Number of days for the plant to grow
+         * @apiParam (Request Parameters) {number} height Typical max height of the plant
+         * @apiParam (Request Parameters) {number} width Typical max width of the plant
+         * @apiParam (Request Parameters) {string} description Description of the plant
+         */
+
+        /**
+         * @apiDefine PlantResponse
+         *
+         * @apiSuccess (Successful Response) {number} plant.id Database id of the plant
+         * @apiSuccess (Successful Response) {string} plant.name Name of the plant
+         * @apiSuccess (Successful Response) {number} plant.depth Depth to plant the seed
+         * @apiSuccess (Successful Response) {number} plant.days_to_harvest Number of days for the plant to grow
+         * @apiSuccess (Successful Response) {number} plant.height Typical max height of the plant
+         * @apiSuccess (Successful Response) {number} plant.width Typical max width of the plant
+         * @apiSuccess (Successful Response) {number} plant.diameter Typical max diameter of the plant
+         * @apiSuccess (Successful Response) {string} plant.description Description of the plant
+         */
+
+        /**
+         * @api {get} /api Get all plants
          * @apiName root
          * @apiGroup Plant
          *
-         * @apiSuccess (Plants) {Plant[]} plants An array of plants. Each element in the array has the following keys:
-         * @apiSuccess (Plants) {string} plant.name Name of the plant
-         * @apiSuccess (Plants) {number} plant.plantingDepth Depth to plant the seed
-         * @apiSuccess (Plants) {number} plant.daysToGerminate Number of days for the seed to germinate
-         * @apiSuccess (Plants) {number} plant.avgMaxHeight Average max height of the plant
-         * @apiSuccess (Plants) {number} plant.avgMaxDiameter Average max diameter of the plant
+         * @apiParam (Request Parameters) {number} [id] Database id of the plant
+         * @apiParam (Request Parameters) {string} [name] Name of the plant
+         * @apiParam (Request Parameters) {boolean} [get_deleted=false] Name of the plant
+         * @apiSuccess (Successful Response) {[plant]} plants An array of plants. Each element in the array has the following keys:
+         * @apiUse PlantResponse
          */
-        this.router.get( "/", this.plantService.getAll );
+        this.router.get( "/", this.plantService.get );
 
         /**
-         * @api {get} /api/v1/plants/:name Get one plant by name
-         * @apiName Get plant by name
-         * @apiGroup Plant
-         *
-         * @apiSuccess (Plant) {string} name Name of the plant
-         * @apiSuccess (Plant) {number} plantingDepth Depth to plant the seed
-         * @apiSuccess (Plant) {number} daysToGerminate Number of days for the seed to germinate
-         * @apiSuccess (Plant) {number} avgMaxHeight Average max height of the plant
-         * @apiSuccess (Plant) {number} avgMaxDiameter Average max diameter of the plant
-         *
-         * @apiSampleRequest /api/v1/plants/lettuce
-         */
-        this.router.get( "/:name", this.plantService.getOne );
-        /**
-         * @api {post} /api/v1/plants Add a new plant
+         * @api {post} /api Add a new plant
          * @apiName Add a new plant
          * @apiGroup Plant
          *
-         * @apiParam (Request Parameters) {string} name Name of the plant
-         * @apiParam (Request Parameters) {number} plantingDepth Depth to plant the seed
-         * @apiParam (Request Parameters) {number} daysToGerminate Number of days for the seed to germinate
-         * @apiParam (Request Parameters) {number} avgMaxHeight Average max height of the plant
-         * @apiParam (Request Parameters) {number} avgMaxDiameter Average max diameter of the plant
-         * @apiParam (Request Parameters) {number} [maxPlantingDepth] Max depth to plant the seed
-         * @apiParam (Request Parameters) {number} [minPlantingDepth] Min depth to plant the seed
-         * @apiSampleRequest /api/v1/plants
-         * @apiSuccess (Successful Response) {string} name Name of the plant
-         * @apiSuccess (Successful Response) {number} plantingDepth Depth to plant the seed
-         * @apiSuccess (Successful Response) {number} daysToGerminate Number of days for the seed to germinate
-         * @apiSuccess (Successful Response) {number} avgMaxHeight Average max height of the plant
-         * @apiSuccess (Successful Response) {number} avgMaxDiameter Average max diameter of the plant
-         * @apiSuccess (Successful Response) {string} _id Database ID
+         * @apiUse PlantRequest
+         * @apiUse PlantResponse
          */
-        this.router.post( "/", this.plantService.postOne );
+        this.router.post( "/", this.plantService.post );
+
+        /**
+         * @api {delete} /api Delete a plant by id
+         * @apiName Delete a  plant
+         * @apiGroup Plant
+         *
+         * @apiParam (Request Parameters) {number} id Database id of the plant
+         */
+        this.router.delete( "/", this.plantService.delete );
     }
 }
 

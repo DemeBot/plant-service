@@ -2,6 +2,7 @@ import * as path from "path";
 import * as express from "express";
 import * as logger from "morgan";
 import * as bodyParser from "body-parser";
+import * as interceptor from "express-interceptor";
 
 import PlantRouter from "./routes/plant.router";
 
@@ -33,6 +34,7 @@ class App {
       res.header( "Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept" );
       next();
     } );
+    this.express.use( "/doc", this.replaceTemplateURL );
   }
 
   // Configure API endpoints.
@@ -40,6 +42,25 @@ class App {
     this.express.use( "/doc", express.static( __dirname + "/apidoc" ) );
     this.express.use( "/api", this.plantRouter.router );
   }
+
+  private replaceTemplateURL = interceptor( ( request: express.Request, response: express.Response ) => {
+    return {
+      isInterceptable: () => {
+        console.log( response.get( "Content-Type" ) );
+        return /application\/javascript/.test( response.get("Content-Type") );
+      },
+      intercept: ( body, send ) => {
+        new Promise( ( resolve, reject ) => {
+          let sourceUrl = ( request.headers[ "x-forwarded-url" ] || "localhost:8080" );
+          console.log( "SourceURL:" + sourceUrl );
+          resolve( sourceUrl.replace( "/doc" + "/api_data.js", "" ) );
+        } )
+        .then( ( url: string ) => {
+          send( body.split( "<base-doc-url>" ).join( url ) );
+        } );
+      }
+    };
+  } );
 
 }
 
