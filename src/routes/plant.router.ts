@@ -21,14 +21,14 @@ export class PlantRouter {
 
     init() {
         /**
-         * @apiDefine PlantRequest
+         * @apiDefine PlantPost
          *
-         * @apiParam (Request Parameters) {string} name Name of the plant
-         * @apiParam (Request Parameters) {number} depth Depth to plant the seed
-         * @apiParam (Request Parameters) {number} days_to_harvest Number of days for the plant to grow
-         * @apiParam (Request Parameters) {number} height Typical max height of the plant
-         * @apiParam (Request Parameters) {number} width Typical max width of the plant
-         * @apiParam (Request Parameters) {string} description Description of the plant
+         * @apiParam (Post Parameters) {string} name Name of the plant
+         * @apiParam (Post Parameters) {number} depth Depth to plant the seed
+         * @apiParam (Post Parameters) {number} days_to_harvest Number of days for the plant to grow
+         * @apiParam (Post Parameters) {number} height Typical max height of the plant
+         * @apiParam (Post Parameters) {number} width Typical max width of the plant
+         * @apiParam (Post Parameters) {string} description Description of the plant
          */
 
         /**
@@ -62,7 +62,7 @@ export class PlantRouter {
          * @apiName Add a new plant
          * @apiGroup Plant
          *
-         * @apiUse PlantRequest
+         * @apiUse PlantPost
          * @apiUse PlantResponse
          */
         this.router.post( "/", this.plantService.post );
