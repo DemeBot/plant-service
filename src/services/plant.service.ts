@@ -67,8 +67,8 @@ export class PlantService {
 
     }
 
-    public delete = ( parameter: Request, response: Response, next: NextFunction ) => {
-        let id = parameter.body.id;
+    public delete = ( request: Request, response: Response, next: NextFunction ) => {
+        let id = request.body.id;
 
         return this.plantController
         .delete( id )
@@ -83,7 +83,35 @@ export class PlantService {
         } );
     }
 
-    public put = ( parameter: Request, response: Response, next: NextFunction ) => {
+    public put = ( request: Request, response: Response, next: NextFunction ) => {
+        console.log(request.params);
+        //response.send(request.params);
+        let id: number = request.params.id;
+        let name = request.body.name;
+        let depth = request.body.depth;
+        let days_to_harvest = request.body.days_to_harvest;
+        let height = request.body.height;
+        let width = request.body.width;
+        let description = request.body.description;
+
+        this.plantController
+        .put(
+            id,
+            name,
+            depth,
+            days_to_harvest,
+            height,
+            width,
+            description
+        )
+        .then( ( plants: PlantInterface ) => {
+            response.status( 200 ).send( { plants : plants } );
+            
+        } )
+        .catch( ( error: Error ) => {
+            console.log( error );
+            response.status( 500 ).send("Server error");
+        } );
     }
 
 }

@@ -95,6 +95,46 @@ export class PlantController {
         } );
     }
 
+    public put(
+        _id: number,
+        _name: string,
+        _depth: number,
+        _days_to_harvest: number,
+        _height: number,
+        _width: number,
+        _description: string
+        ): Promise<PlantInterface> {
+
+        let doc = {
+            name: _name,
+            depth: _depth,
+            days_to_harvest: _days_to_harvest,
+            height: _height,
+            width: _width,
+            description: _description
+        };
+        console.log(JSON.stringify(doc))
+
+
+        let query: string = "UPDATE `PLANT_TYPES` SET ? WHERE `id`= " + mysql.escape(_id);
+
+        return new Promise( ( resolve, reject ) => {
+            console.log( query );
+            this.DB.query( query, doc, ( error: Error, results ) => {
+                if ( error ) reject( error );
+                else {
+                    console.log( "Updated ID: " + _id );
+                    this.get( _id )
+                    .then( ( result: PlantInterface[] ) => {
+                        console.log(result);
+                        resolve( result[0] );
+                    } );
+                }
+            } );
+        } );
+    }
+    
+
     public delete (
         _id: number
     ): Promise<PlantInterface[]> {
