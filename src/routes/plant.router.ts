@@ -75,6 +75,16 @@ export class PlantRouter {
          * @apiParam (Request Parameters) {number} id Database id of the plant
          */
         this.router.delete( "/", this.plantService.delete );
+
+        /**
+         * @api {put} /api/:id Update a plant by id
+         * @apiName Update a plant's information
+         * @apiGroup Plant
+         * 
+         * @apiUse PlantPost
+         * @apiUse PlantResponse
+         */
+        this.router.put( "/:id", this.plantService.put );
     }
 }
 

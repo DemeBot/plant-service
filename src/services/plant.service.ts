@@ -83,6 +83,9 @@ export class PlantService {
         } );
     }
 
+    public put = ( parameter: Request, response: Response, next: NextFunction ) => {
+    }
+
 }
 
 export default PlantService;
